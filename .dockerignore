@@ -1,0 +1,11 @@
+node_modules
+.next
+out
+coverage
+.git
+agent-tools
+npm-debug.log*
+.DS_Store
+*.pem
+.vercel
+README.md

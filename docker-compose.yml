@@ -1,0 +1,28 @@
+services:
+  web:
+    image: zhanqiao:local
+    build:
+      context: .
+      args:
+        APP_VERSION: ${APP_VERSION:-0.1.0}
+        GIT_SHA: ${GIT_SHA:-local}
+        BUILD_TIME: ${BUILD_TIME:-unknown}
+    ports:
+      - "${APP_PORT:-41821}:3000"
+    environment:
+      APP_VERSION: ${APP_VERSION:-0.1.0}
+      GIT_SHA: ${GIT_SHA:-local}
+      BUILD_TIME: ${BUILD_TIME:-unknown}
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/api/health').then((response) => process.exit(response.ok ? 0 : 1)).catch(() => process.exit(1))",
+        ]
+      interval: 2s
+      timeout: 5s
+      retries: 15
+      start_period: 5s
+    restart: unless-stopped

@@ -1,0 +1,24 @@
+version: "1.0"
+name: zhanqiao
+displayName: 栈桥前端流水线
+triggers:
+  push:
+    branches:
+      include:
+        - main
+        - master
+stages:
+  - stage:
+      name: image
+      displayName: 构建镜像
+      failFast: true
+      steps:
+        - step: build@docker
+          name: build_docker
+          displayName: 构建并推送镜像
+          repository: ${DOCKER_REGISTRY}
+          username: ${DOCKER_USERNAME}
+          password: ${DOCKER_PASSWORD}
+          tag: ${DOCKER_IMAGE}:${GITEE_PIPELINE_BUILD_NUMBER}
+          dockerfile: ./Dockerfile
+          isCache: false
